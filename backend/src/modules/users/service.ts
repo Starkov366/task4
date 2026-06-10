@@ -46,7 +46,7 @@ export const usersService = {
     },
 
     
-    deleteUnverified: async (ids: number[]) => {
-        return usersRepository.deleteUnverified(ids);
+    deleteUnverified: async () => {
+        return usersRepository.deleteUnverified();
     }
 };

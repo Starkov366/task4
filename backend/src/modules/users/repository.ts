@@ -30,10 +30,9 @@ export const usersRepository = {
         );
     },
 
-    async deleteUnverified(ids: number[]) {
+    async deleteUnverified() {
         return pool.query(
-            `DELETE FROM users WHERE id = ANY($1) AND status = 'unverified'`,
-            [ids]
+            `DELETE FROM users WHERE status = 'unverified'`
         );
     }
 };

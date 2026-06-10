@@ -28,7 +28,7 @@ router.post("/delete", async (req, res) => {
 });
 
 router.post("/delete-unverified", async (req, res) => {
-    await usersService.deleteUnverified(req.body.ids);
+    await usersService.deleteUnverified();
     res.json({ ok: true });
 });
 
