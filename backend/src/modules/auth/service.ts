@@ -16,7 +16,7 @@ export const authService = {
                 token
             );
     
-            sendVerificationEmail(email, token);
+            await sendVerificationEmail(email, token);
     
             return user.rows[0];
     
