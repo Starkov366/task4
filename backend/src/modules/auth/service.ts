@@ -1,4 +1,3 @@
-import jwt from "jsonwebtoken";
 import { authRepository } from "./repository";
 import crypto from "crypto";
 import { sendVerificationEmail } from "../../services/mail";
@@ -53,13 +52,9 @@ export const authService = {
             [user.id]
         );
     
-        const token = jwt.sign(
-            { id: user.id },
-            process.env.JWT_SECRET as string,
-            { expiresIn: "7d" }
-        );
+       
     
-        return { token, user };
+        return { user };
     },
     async verify(token: string) {
         const result = await authRepository.verifyUser(token);
