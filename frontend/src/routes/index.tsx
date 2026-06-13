@@ -1,7 +1,8 @@
 import { ROUTES } from "./types"
-import { Authorization } from "../pages/authorization"
+import  Authorization  from "../pages/authorization"
 import { UserManagement } from "../pages/userManagement"
 import type { routerConfigType } from "./types"
+import ProtectedRoute from "../router/protectedRoute"
 
 export const routerConfig: routerConfigType[] = [
     {
@@ -10,6 +11,6 @@ export const routerConfig: routerConfigType[] = [
     },
     {
         path: ROUTES.MAIN,
-        element: <UserManagement/>
+        element: <ProtectedRoute><UserManagement/></ProtectedRoute>
     }
 ]

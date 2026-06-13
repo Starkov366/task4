@@ -1,0 +1,161 @@
+.autorizationPage {
+     display: flex;
+     flex-direction: row;
+     align-items: center;
+     justify-content: space-between;
+ }
+ 
+
+ .background {
+     margin-top: -20px;
+     margin-right: -20px;
+     margin-bottom: -10px;
+     background: url("../../../public/graphic-2d-colorful-wallpaper-with-grainy-gradients.jpg") center / cover;
+         
+     height: 101vh;
+     border-top-left-radius: 350px;
+     width: 40vw;
+ }
+ 
+
+ .form {
+     display: flex;
+     flex-direction: column;
+     justify-content: space-between;
+     align-items: flex-start;
+     height: 100vh;
+     border-radius: 30px;
+ }
+
+ .formTitle {
+     display: flex;
+     flex-direction: row-reverse;
+     gap: 10px;
+     user-select: none;
+     align-items: center;
+ }
+ 
+ .formTitleName {
+     text-align: center;
+     font-weight: 800;
+     font-size: 30px;
+ }
+ 
+ .formTitleLogo {
+     width: 50px;
+     height: 50px;
+     -webkit-user-drag: none;
+ }
+ 
+
+ .formInner {
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     border-radius: 15px;
+     padding-bottom: 10px;
+     margin-left: 20vw;
+     width: 70%;
+     background-color: rgb(255, 255, 255);
+ }
+ 
+ .formInnerTitle {
+     font-size: 30px;
+     font-weight: 700;
+     user-select: none;
+ }
+ 
+
+ .formInnerInputs {
+     display: flex;
+     flex-direction: column;
+     position: relative;
+     align-items: center;
+     justify-content: center;
+     gap: 30px;
+ }
+ 
+
+ .formInnerInputsLogin {
+     width: 30vw;
+     height: 50px;
+     border-radius: 5px;
+     border: 2px solid rgb(187, 187, 187);
+     font-size: 18px;
+     font-weight: 600;
+     color: rgb(59, 55, 55);
+     outline: none;
+     transition: all 0.5s ease;
+ }
+ 
+ .formInnerInputsLogin:focus {
+     border: 3px solid rgb(37, 153, 219);
+ }
+ 
+
+ .formInnerInputsPassword {
+     width: 30vw;
+     height: 50px;
+     border-radius: 5px;
+     border: 2px solid rgb(187, 187, 187);
+     font-size: 18px;
+     font-weight: 600;
+     color: rgb(59, 55, 55);
+     outline: none;
+     transition: all 0.5s ease;
+ }
+ 
+ .formInnerInputsPassword:focus {
+     border: 3px solid rgb(37, 153, 219);
+ }
+ 
+
+ .formInnerInputsPasswordEye {
+     position: absolute;
+     top: 105px;
+     left: 28vw;
+     cursor: pointer;
+ }
+ 
+
+ .formInnerInputsSubmit {
+     width: 27vw;
+     border: none;
+     height: 45px;
+     background-color: rgb(0, 140, 255);
+     color: white;
+     font-size: 20px;
+     font-weight: 550;
+     border-radius: 5px;
+     transition: all 0.5s ease;
+ }
+ 
+ .formInnerInputsSubmit:hover {
+     background-color: rgb(85, 178, 255);
+ }
+ 
+
+ .formInnerInputsTitle {
+     font-size: 18px;
+     user-select: none;
+ }
+ 
+
+ .formRegistration {
+     margin-bottom: 20px;
+     user-select: none;
+ }
+ 
+ .formRegistrationLabel {
+     font-weight: 700;
+     font-size: 20px;
+     cursor: pointer;
+ }
+ 
+
+ html {
+     font-family: "Tektur", sans-serif;
+     font-weight: 500;
+     overflow: hidden;
+ }
