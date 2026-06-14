@@ -137,7 +137,7 @@ const UserManagement = () => {
                                 </td>
 
                                 <td className={styles.lastSeen}>
-                                    <div>{u.lastLogin || "—"}</div>
+                                    <div>{u.lastLogin}</div>
                                     <div className={styles.bars}>
                                         <span />
                                         <span />
