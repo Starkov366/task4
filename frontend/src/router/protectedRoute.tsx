@@ -3,8 +3,8 @@ import { Navigate } from "react-router-dom";
 
 const ProtectedRoute = ({ children }: { children: React.JSX.Element }) => {
     const userRaw = localStorage.getItem("user");
-
-    if (!userRaw) return <Navigate to="/auth" replace />;
+const path = "/authorization"
+    if (!userRaw) return <Navigate to={path} replace />;
 
     let user;
 
@@ -12,18 +12,18 @@ const ProtectedRoute = ({ children }: { children: React.JSX.Element }) => {
         user = JSON.parse(userRaw);
     } catch {
         localStorage.removeItem("user");
-        return <Navigate to="/auth" replace />;
+        return <Navigate to={path} replace />;
     }
 
-    if (!user) return <Navigate to="/auth" replace />;
+    if (!user) return <Navigate to={path} replace />;
 
     if (user.status === "blocked") {
         localStorage.removeItem("user");
-        return <Navigate to="/auth" replace />;
+        return <Navigate to={path} replace />;
     }
 
     if (user.status === "unverified") {
-        return <Navigate to="/auth" replace />;
+        return <Navigate to={path} replace />;
     }
 
     return children;

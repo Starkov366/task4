@@ -1,6 +1,6 @@
 import { ROUTES } from "./types"
 import  Authorization  from "../pages/authorization"
-import { UserManagement } from "../pages/userManagement"
+import UserManagement from "../pages/userManagement"
 import type { routerConfigType } from "./types"
 import ProtectedRoute from "../router/protectedRoute"
 

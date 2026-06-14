@@ -9,6 +9,7 @@ const Authorization = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [loginName, setLoginName] = useState("");
 
     const [showPassword, setShowPassword] = useState(false);
 
@@ -33,9 +34,9 @@ navigator("/user-management")
                 return;
             }
 
-            await register("", email, password);
+            await register(loginName, email, password);
 
-            setSuccess("Регистрация успешна! Проверь почту для подтверждения.");
+            setSuccess("Registration success@! CHeck email for access");
 
             setMode("login");
         } catch (e: any) {
@@ -61,6 +62,15 @@ navigator("/user-management")
                         className={styles.formInnerInputs}
                         onSubmit={(e) => e.preventDefault()}
                     >
+                        {mode === "register" && (
+    <input
+        type="text"
+        placeholder="Login..."
+        value={loginName}
+        onChange={(e) => setLoginName(e.target.value)}
+        className={styles.formInnerInputsLogin}
+    />
+)}
                         <input
                             type="email"
                             placeholder="Email..."
@@ -88,15 +98,7 @@ navigator("/user-management")
                                 }
                             />
 
-                            <FaRegEyeSlash
-                                className={
-                                    styles.formInnerInputsPasswordEye
-                                }
-                                size={28}
-                                onClick={() =>
-                                    setShowPassword((p) => !p)
-                                }
-                            />
+                            
                         </div>
 
                         <input
