@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import styles from "./styled.module.scss";
 import {
     getUsers,
@@ -13,18 +14,71 @@ const UserManagement = () => {
     const [selected, setSelected] = useState<number[]>([]);
     const [filter, setFilter] = useState("");
 
-    const load = async () => {
+    const navigate = useNavigate();
+
+
+    const getMe = () => {
+        const raw = localStorage.getItem("user");
+        if (!raw) return null;
+
+        try {
+            const parsed = JSON.parse(raw);
+            return parsed?.user ?? parsed;
+        } catch {
+            return null;
+        }
+    };
+
+    const logout = () => {
+        localStorage.removeItem("user");
+        navigate("/authorization", { replace: true });
+    };
+
+    const loadUsers = async () => {
         const data = await getUsers();
         setUsers(data);
+        return data;
+    };
+
+
+    const checkSelf = async (latestUsers: any[]) => {
+        const me = getMe();
+        if (!me?.email) return;
+
+        const freshMe = latestUsers.find((u) => u.email === me.email);
+
+
+        if (!freshMe) {
+            logout();
+            return;
+        }
+
+        const status = (freshMe.status || "").toLowerCase();
+
+     
+        if (status === "blocked" || status === "unverified") {
+            logout();
+            return;
+        }
+
+    
+        localStorage.setItem("user", JSON.stringify(freshMe));
     };
 
     useEffect(() => {
-        load();
+        (async () => {
+            const data = await loadUsers();
+            await checkSelf(data);
+        })();
     }, []);
 
-    const refresh = async () => {
-        await load();
-        setSelected([]);
+    const runAction = async (action: any) => {
+        await action();
+
+        const data = await loadUsers();
+
+       
+        await checkSelf(data);
     };
 
     const toggleSelectAll = () => {
@@ -37,7 +91,9 @@ const UserManagement = () => {
 
     const toggleSelect = (id: number) => {
         setSelected((prev) =>
-            prev.includes(id) ? prev.filter((i) => i !== id) : [...prev, id]
+            prev.includes(id)
+                ? prev.filter((i) => i !== id)
+                : [...prev, id]
         );
     };
 
@@ -47,109 +103,73 @@ const UserManagement = () => {
             u.email?.toLowerCase().includes(filter.toLowerCase())
     );
 
-    const getStatusClass = (status: string) => {
-        switch (status) {
-            case "Active":
-                return styles.active;
-            case "Blocked":
-                return styles.blocked;
-            case "Unverified":
-                return styles.unverified;
-            default:
-                return "";
-        }
-    };
-
     return (
         <div className={styles.wrapper}>
-         
             <div className={styles.toolbar}>
                 <div className={styles.actions}>
-                    <button onClick={() => blockUsers(selected).then(refresh)}>
+                    <button onClick={() => runAction(() => blockUsers(selected))}>
                         Block
                     </button>
-                    <button onClick={() => unblockUsers(selected).then(refresh)}>
+
+                    <button onClick={() => runAction(() => unblockUsers(selected))}>
                         Unblock
                     </button>
-                    <button onClick={() => deleteUsers(selected).then(refresh)}>
+
+                    <button onClick={() => runAction(() => deleteUsers(selected))}>
                         Delete
                     </button>
-                    <button onClick={() => deleteUnverified().then(refresh)}>
+
+                    <button onClick={() => runAction(() => deleteUnverified())}>
                         Delete unverified
                     </button>
                 </div>
 
                 <input
                     className={styles.filter}
-                    placeholder="Filter"
                     value={filter}
                     onChange={(e) => setFilter(e.target.value)}
                 />
             </div>
 
-            <div className={styles.tableWrapper}>
-                <table className={styles.table}>
-                    <thead>
-                        <tr>
-                            <th>
+            <table className={styles.table}>
+                <thead>
+                    <tr>
+                        <th>
+                            <input
+                                type="checkbox"
+                                checked={
+                                    selected.length === users.length &&
+                                    users.length > 0
+                                }
+                                onChange={toggleSelectAll}
+                            />
+                        </th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Status</th>
+                        <th>Last seen</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {filteredUsers.map((u) => (
+                        <tr key={u.id}>
+                            <td>
                                 <input
                                     type="checkbox"
-                                    checked={
-                                        selected.length === users.length &&
-                                        users.length > 0
-                                    }
-                                    onChange={toggleSelectAll}
+                                    checked={selected.includes(u.id)}
+                                    onChange={() => toggleSelect(u.id)}
                                 />
-                            </th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Last seen</th>
+                            </td>
+
+                            <td>{u.name}</td>
+                            <td>{u.email}</td>
+                            <td>{u.status}</td>
+                            <td>{u.last_login?.slice(0, 10)}</td>
                         </tr>
-                    </thead>
-
-                    <tbody>
-                        {filteredUsers.map((u) => (
-                            <tr key={u.id}>
-                                <td>
-                                    <input
-                                        type="checkbox"
-                                        checked={selected.includes(u.id)}
-                                        onChange={() => toggleSelect(u.id)}
-                                    />
-                                </td>
-
-                                <td className={styles.nameCell}>
-                                    <div>{u.name}</div>
-                                   
-                                </td>
-
-                                <td>{u.email}</td>
-
-                                <td>
-                                    <span
-                                        className={`${styles.status} ${getStatusClass(
-                                            u.status
-                                        )}`}
-                                    >
-                                        {u.status}
-                                    </span>
-                                </td>
-
-                                <td className={styles.lastSeen}>
-                                    <div>{u.last_login ? u.last_login.slice(0,10): ""}</div>
-                                    <div className={styles.bars}>
-                                        <span />
-                                        <span />
-                                        <span />
-                                        <span />
-                                    </div>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
-            </div>
+                    ))}
+                </tbody>
+            </table>
         </div>
     );
 };

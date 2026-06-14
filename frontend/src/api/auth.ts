@@ -55,3 +55,10 @@ export const verify = async (token: string) => {
 
     return parseResponse(res);
 };
+export const findByEmail = async (email: string) => {
+    const res = await fetch(`${BASE_URL}/auth/email/${email}`, {
+        method: "GET",
+    });
+
+    return parseResponse(res);
+};
