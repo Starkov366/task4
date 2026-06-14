@@ -137,7 +137,7 @@ const UserManagement = () => {
                                 </td>
 
                                 <td className={styles.lastSeen}>
-                                    <div>{u.last_login}</div>
+                                    <div>{u.last_login.slice(0,10)}</div>
                                     <div className={styles.bars}>
                                         <span />
                                         <span />
